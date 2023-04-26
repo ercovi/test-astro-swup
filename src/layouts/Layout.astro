@@ -1,0 +1,63 @@
+---
+export interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+		<main id="swup">
+			<slot />
+		</main>
+	</body>
+</html>
+<script>
+	const options = [
+		{
+			from: '(.*)',
+			to: '(.*)',
+			in: function(next) {
+				console.log('in');
+				next();
+			},
+			out: (next) => {
+				console.log('out');
+				next();
+			}
+		}
+	];
+	import Swup from "swup";
+	import SwupPreloadPlugin from "@swup/preload-plugin";
+	import SwupHeadPlugin from "@swup/head-plugin";
+	import SwupA11yPlugin from "@swup/a11y-plugin";
+	import SwupJsPlugin from "@swup/js-plugin";
+	import SwupBodyClassPlugin from "@swup/body-class-plugin";
+	import SwupScrollPlugin from "@swup/scroll-plugin";
+
+	const swup = new Swup({ 
+		containers: ['#swup'],
+		animationSelector: '[class*="bliss-transition-"]',
+		plugins: [
+			new SwupJsPlugin(options),
+			new SwupHeadPlugin(),
+			new SwupA11yPlugin(),
+			new SwupPreloadPlugin(),
+			new SwupBodyClassPlugin(),
+			// new SwupDebugPlugin(),
+			// new SwupGiaPlugin(),
+			new SwupScrollPlugin({ doScrollingRightAway: false, animateScroll: false, scrollFriction: 0, scrollAcceleration: 0, })
+		],
+		// theme: [new SwupFadeTheme()],
+
+	});
+</script>
